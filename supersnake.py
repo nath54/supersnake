@@ -82,9 +82,9 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr):
     pygame.draw.rect(fenetre,(5,5,5),(bpx,bpy,(tx+1)*tc,(ty+1)*tc),0)
     if affquadr:
         for x in range(0,tx+2):
-            pygame.draw.line(fenetre,(200,200,200),(bpx+tc*x,bpy),(bpx+tc*x,bpy+(tc*ty+2)),1)
+            pygame.draw.line(fenetre,(200,200,200),(bpx+tc*x,bpy),(bpx+tc*x,bpy+(tc*(ty+1))),1)
         for y in range(0,ty+2):
-            pygame.draw.line(fenetre,(200,200,200),(bpx,bpy+tc*y),(bpx+(tc*tx+2),bpy+tc*y),1)
+            pygame.draw.line(fenetre,(200,200,200),(bpx,bpy+tc*y),(bpx+(tc*(tx+1)),bpy+tc*y),1)
     for c in cubes:
         pygame.draw.rect(fenetre,clm,(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),0)
     for o in objs:
@@ -243,12 +243,12 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin):
     cubes=[]
     nbc=random.randint(0*dif,10*dif)
     for c in range(nbc):
-        px,py=random.randint(0,tx),random.randint(0,ty)
-        while [px,py] in cubes: px,py=random.randint(0,tx),random.randint(0,ty)
+        px,py=random.randint(5,tx),random.randint(5,ty)
+        while [px,py] in cubes: px,py=random.randint(5,tx),random.randint(5,ty)
         cubes.append([px,py])
     for s in range(nbj+nbb):
-        px,py=random.randint(0,tx),random.randint(0,ty)
-        while [px,py] in cubes: px,py=random.randint(0,tx),random.randint(0,ty)
+        px,py=random.randint(5,tx),random.randint(5,ty)
+        while [px,py] in cubes: px,py=random.randint(5,tx),random.randint(5,ty)
         snakes.append( Snake(px,py,rcl(),tmin) )
         if s<nbj:
             snakes[s].keys=pkeys[s]
@@ -342,7 +342,7 @@ def affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin):
     bts[4]=bouton(250,200,20,20,(0,150,0))
     texte("-",25,200,20,(0,0,0))
     texte("+",255,200,20,(0,0,0))
-    texte("numbers of bots : "+str(nbj),55,200,20,(0,0,0))
+    texte("numbers of bots : "+str(nbb),55,200,20,(0,0,0))
     pygame.display.update()
     return bts
 
