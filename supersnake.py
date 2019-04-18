@@ -1,16 +1,9 @@
 #coding:utf-8
-import random,pygame,time,os,numpy,torch
+import random,pygame,time,os
 from pygame.locals import *
 
 btex,btey=1000,900
 mmtex,mmtey=1280,1024
-
-fich="C:/Users/UserPC/Documents/dev_cuda2/data.nath"
-fichpy="C:/Users/UserPC/Documents/dev_cuda2/libiat.py"
-fich_model="C:/Users/UserPC/Documents/dev_cuda2/model_le_plus_points.pt"
-cac="|"
-cacc="#"
-ccac="_"
 
 pygame.init()
 
@@ -229,8 +222,6 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv):
   return snakes,cubes,mis,tx,ty,objs,dtc,tac,nbv
 
 def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin):
-    datas=[]
-    model=None
     bpx,bpy=rx(50),ry(50)
     tc=rx(750)/tx
     dtc=time.time()
@@ -359,9 +350,6 @@ def menu():
     affquadr=1 #non : 0 , oui : 1
     encourp=False
     encourm=True
-    aprendreia=False
-    if aprendreia:
-        encourm,encourp=False,True
     while encourm:
         bts=affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin)
         for event in pygame.event.get():
