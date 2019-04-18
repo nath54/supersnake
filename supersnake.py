@@ -87,8 +87,8 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr):
             for c in s.cubes:
                 pygame.draw.rect(fenetre,c[2],(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),0)
                 if affbords: pygame.draw.rect(fenetre,(255,255,255),(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),1)
-    texte("scores    lenghts",850,5,20,(250,250,250))
-    for s in snakes: texte('p'+str(snakes.index(s)+1)+' : '+str(s.points)+"         "+str(len(s.cubes)),850,50+30*snakes.index(s),18,(255,255,255))
+    texte("scores | sizes",850,5,20,(250,250,250))
+    for s in snakes: texte('p'+str(snakes.index(s)+1)+' : '+str(s.points)+" | "+str(len(s.cubes)),850,50+30*snakes.index(s),18,(255,255,255))
     pygame.display.update()
 
 def agrandirsnake(nb,s):
@@ -153,8 +153,8 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv):
     ccccc=[]
     dtc=time.time()
     while len(objs)<nbobjs:
-        px,py=random.randint(0,tx),random.randint(0,ty)
-        while [px,py] in cubes: px,py=random.randint(0,tx),random.randint(0,ty)
+        px,py=random.randint(5,tx-5),random.randint(5,ty-5)
+        while [px,py] in cubes: px,py=random.randint(5,tx-5),random.randint(5,ty-5)
         objs.append([px,py,random.randint(0,5)])
     for s in snakes:
         if not s.perdu:
@@ -234,12 +234,12 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin):
     cubes=[]
     nbc=random.randint(0*dif,10*dif)
     for c in range(nbc):
-        px,py=random.randint(5,tx),random.randint(5,ty)
-        while [px,py] in cubes: px,py=random.randint(5,tx),random.randint(5,ty)
+        px,py=random.randint(5,tx-5),random.randint(5,ty-5)
+        while [px,py] in cubes: px,py=random.randint(5,tx-5),random.randint(5+5,ty-5)
         cubes.append([px,py])
     for s in range(nbj+nbb):
-        px,py=random.randint(5,tx),random.randint(5,ty)
-        while [px,py] in cubes: px,py=random.randint(5,tx),random.randint(5,ty)
+        px,py=random.randint(5,tx-5),random.randint(5,ty-5)
+        while [px,py] in cubes: px,py=random.randint(5,tx-5),random.randint(5,ty-5)
         snakes.append( Snake(px,py,rcl(),tmin) )
         if s<nbj:
             snakes[s].keys=pkeys[s]
@@ -290,17 +290,23 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin):
     pygame.draw.rect(fenetre,(218,218,218),(rx(400),ry(650),rx(100),ry(200)),0)
     pygame.draw.rect(fenetre,(143,61,5),(rx(600),ry(700),rx(100),ry(150)),0)
     #
-    texte("Player"+str(lp1+1),500,500,20,(255,255,255))
+    nm="Player"
+    if snakes[lp1].player==0: nm="Bot"
+    texte(nm+str(lp1+1),500,500,20,(255,255,255))
     texte("score "+str(snakes[lp1].points),500,540,17,(255,255,255))
-    texte("len "+str(len(snakes[lp1].cubes)),500,560,17,(255,255,255))
+    texte("size "+str(len(snakes[lp1].cubes)),500,560,17,(255,255,255))
     #
-    texte("Player"+str(lp2+1),400,550,20,(255,255,255))
+    nm="Player"
+    if snakes[lp2].player==0: nm="Bot"
+    texte(nm+str(lp2+1),400,550,20,(255,255,255))
     texte("score "+str(snakes[lp2].points),400,590,17,(255,255,255))
-    texte("len "+str(len(snakes[lp2].cubes)),400,630,17,(255,255,255))
+    texte("size "+str(len(snakes[lp2].cubes)),400,630,17,(255,255,255))
     #
-    texte("Player"+str(lp3+1),600,600,20,(255,255,255))
+    nm="Player"
+    if snakes[lp2].player==0: nm="Bot"
+    texte(nm+str(lp3+1),600,600,20,(255,255,255))
     texte("score "+str(snakes[lp3].points),600,640,17,(255,255,255))
-    texte("len "+str(len(snakes[lp3].cubes)),600,660,17,(255,255,255))
+    texte("size "+str(len(snakes[lp3].cubes)),600,660,17,(255,255,255))
     pygame.display.update()
     while encourfg:
         for event in pygame.event.get():
@@ -315,6 +321,8 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin):
 
 
 ##################################menu
+
+ldifs=["easy","medium","hard","hardcore"]
 
 def affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin):
     bts=[]
@@ -334,6 +342,39 @@ def affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin):
     texte("-",25,200,20,(0,0,0))
     texte("+",255,200,20,(0,0,0))
     texte("numbers of bots : "+str(nbb),55,200,20,(0,0,0))
+    #difficulté
+    bts[5]=bouton(20,300,20,20,(150,150,0))
+    bts[6]=bouton(150,300,20,20,(150,150,0))
+    texte("<",25,300,20,(0,0,0))
+    texte(">",155,300,20,(0,0,0))
+    texte(ldifs[dif],55,300,20,(0,0,0))
+    #taillemin
+    bts[7]=bouton(20,240,20,20,(150,0,0))
+    bts[8]=bouton(250,240,20,20,(0,150,0))
+    texte("-",25,240,20,(0,0,0))
+    texte("+",255,240,20,(0,0,0))
+    texte("begining size : "+str(tmin),55,240,20,(0,0,0))
+    #taillemin
+    bts[9]=bouton(20,340,20,20,(150,0,0))
+    bts[10]=bouton(250,340,20,20,(0,150,0))
+    texte("-",25,340,20,(0,0,0))
+    texte("+",255,340,20,(0,0,0))
+    texte("resolution : "+str(tx)+"*"+str(ty),55,340,20,(0,0,0))
+    #affbords
+    clb=(250,0,0)
+    if affbords: clb=(0,250,0)
+    bts[11]=bouton(400,50,25,20,clb)
+    texte("show edges",430,50,20,(0,0,0))
+    #affquadr
+    clb=(250,0,0)
+    if affquadr: clb=(0,250,0)
+    bts[12]=bouton(400,90,25,20,clb)
+    texte("show grid",430,90,20,(0,0,0))
+    #modes de jeu
+    #TODO
+    #mode couleurs
+    #TODO
+    #update screen
     pygame.display.update()
     return bts
 
@@ -363,10 +404,22 @@ def menu():
                     if b!=None and rpos.colliderect(b):
                         di=bts.index(b)
                         if di==0: encourm,encourp=False,True
-                        elif di==1 and nbj>1: nbj-=1
+                        elif di==1 and nbj>0: nbj-=1
                         elif di==2 and nbj<4: nbj+=1
-                        elif di==3 and nbb>1: nbb-=1
+                        elif di==3 and nbb>0: nbb-=1
                         elif di==4 and nbb<15: nbb+=1
+                        elif di==5 and dif>0: dif-=1
+                        elif di==6 and dif<3: dif+=1
+                        elif di==7 and tmin>2: tmin-=1
+                        elif di==8 and tmin<6: tmin+=1
+                        elif di==9:
+                            if tx==50: tx,ty=40,30
+                            elif tx==65: tx,ty=50,40
+                        elif di==10:
+                            if tx==40: tx,ty=50,40
+                            elif tx==50: tx,ty=65,50
+                        elif di==11: affbords=not affbords
+                        elif di==12: affquadr=not affquadr
     if encourp:
         men=game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin)
         if men: menu()
