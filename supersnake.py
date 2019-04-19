@@ -502,8 +502,10 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palierpo
                 if t!=lp2 and t!=lp1 and teams[t].points>teams[lp3].points: lp3=t
             while lp4==lp3 and lp4==lp2 and lp4==lp1: lp4=random.randint(0,nbteams-1)
         texte("classement : ",400,450,25,(0,0,0))
-        for t in range(nbteams):
-            texte("team"+str(t+1)+" : "+str(teams.points),350,490+40*t,20,(0,0,0))
+        texte("team"+str(lp1+1)+" : "+str(teams[lp1].points),350,490+40*0,20,(0,0,0))
+        texte("team"+str(lp2+1)+" : "+str(teams[lp2].points),350,490+40*1,20,(0,0,0))
+        if nbteams > 2 : texte("team"+str(lp3+1)+" : "+str(teams[lp3].points),350,490+40*2,20,(0,0,0))
+        if nbteams > 3 : texte("team"+str(lp4+1)+" : "+str(teams[lp4].points),350,490+40*3,20,(0,0,0))
     if mode==1:
         sg=0
         for s in snakes:
@@ -533,8 +535,8 @@ def affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palie
     for w in range(40): bts.append(None)
     fenetre.fill(clf)
     texte("SUPERSNAKE",50,50,50,rcl())
-    bts[0]=bouton(300,600,200,100,(150,150,50))
-    texte("play",320,620,20,(0,0,0))
+    bts[0]=bouton(450,500,100,50,(150,150,50))
+    texte("play",460,510,20,(0,0,0))
     #nbj
     bts[1]=bouton(20,150,20,20,(150,0,0))
     bts[2]=bouton(250,150,20,20,(0,150,0))
@@ -659,6 +661,13 @@ def affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palie
         texte("-",355,390,25,(0,0,0))
         texte("+",560,390,25,(0,0,0))
         texte("max points : "+str(palierpoints),380,390,20,(0,0,0))
+    #règles
+    texte("Rules : ",50,570,20,(255,255,255))
+    texte("Small gray cubes enlarge the body of your snake",20,600,20,(150,150,150))
+    texte("Small red cubes reduce the body of your snake",20,630,20,(150,0,0))
+    texte("Small yellow cubes replace the end of your snake's body with a wall",20,660,20,(150,150,0))
+    texte("Small green cubes give you points",20,690,20,(0,150,0))
+    texte("Small purple cubes kill you",20,720,20,(150,0,150))
     #mode couleurs
     #TODO
     #update screen
