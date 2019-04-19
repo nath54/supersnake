@@ -5,6 +5,8 @@ Description:
 
 This is a little game made in python with the pygame library, it's a game based on the famous snake game, but there are some innovations. There are several different game modes, and you can customize many things.
 
+![](screenshot.jpg)
+
 Install and launch the game:
 ----------------------------
 
