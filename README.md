@@ -10,8 +10,8 @@ Install and launch the game:
 
 To play the game , there is 2 possibilities:
 
-- If you have python3 and the pygame library: you download the file 'supersnake.py' and you launch it with the command : "python supersnake.py" or "python3 supersnake.py"
-- If you are on windows : you download the file 'jeu.zip', you extract it and you lanch the file 'supersnake.exe'
+- If you have python3 and the pygame library: you download the file 'supersnake.py' and you launch it with the command: "python supersnake.py" or "python3 supersnake.py"
+- If you are on windows: you download the file 'jeu.zip', you extract it and you lanch the file 'supersnake.exe'
 
 Essential things to know about this game:
 -----------------------------------------
@@ -33,7 +33,7 @@ The snake does not die when it reaches the edges of the map
 The different game modes:
 -------------------------
 
-There is 6 game modes :
+There is 6 game modes:
 
 - Normal:
         - This is the normal snake's game mode 
@@ -51,30 +51,30 @@ There is 6 game modes :
 The controls:
 -------------
 
-To control your snake, there are 4 controls available :
+To control your snake, there are 4 controls available:
  
-    -The 1st control :
-        -Key up to go up
-        -Key down to go down
-        -Key left to go left
-        -Key right to go right
+- The 1st control:
+	- Key up to go up
+	- Key down to go down
+	- Key left to go left
+	- Key right to go right
 
-    -The 2nd control :
-        -Key numpad8 to go up
-        -Key numpad2 to go down
-        -Key numpad4 to go left
-        -Key numpad6 to go right
-    
-    -The 3rd control :
-        -Key o to go up
-        -Key l to go down
-        -Key k to go left
-        -Key m to go right
-    
-    -The 4th control :
-        -Key t to go up
-        -Key g to go down
-        -Key f to go left
-        -Key h to go right
+- The 2nd control:
+	- Key numpad8 to go up
+	- Key numpad2 to go down
+	- Key numpad4 to go left
+	- Key numpad6 to go right
+
+- The 3rd control:
+	- Key o to go up
+	- Key l to go down
+	- Key k to go left
+	- Key m to go right
+
+- The 4th control:
+	- Key t to go up
+	- Key g to go down
+	- Key f to go left
+	- Key h to go right
 
 Enjoy !
