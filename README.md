@@ -5,6 +5,13 @@ Description:
 
 This is a little game made in python with the pygame library, it's a game based on the famous snake game, but there are some innovations. There are several different game modes, and you can customize many things.
 
+Install and launch the game:
+----------------------------
+
+To play the game , there is 2 possibilities :
+    -If you have python3 and the pygame library: you download the file 'supersnake.py' and you launch it with the command : "python supersnake.py" or "python3 supersnake.py"
+    -If you are on windows : you download the file 'jeu.zip', you extract it and you lanch the file 'supersnake.exe'
+
 Essential things to know about this game:
 -----------------------------------------
 
