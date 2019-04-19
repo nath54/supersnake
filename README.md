@@ -35,18 +35,12 @@ The different game modes:
 
 There is 6 game modes:
 
-- Normal:
-        - This is the normal snake's game mode 
-- Battle Royale:
-        - You must be the last snake alive, stay in the area that shrinks every 10 seconds.
-- Time Match:
-        - You must have as many points as possible at the end of the elapsed time.
-- Max size match:
-        - The game ends when one of the snakes reaches the maximum size.
-- Max points match:
-        - The game ends when one of the snakes reaches the maximum points.
-- Team match:
-        - The team with the most points at the end of the game wins.
+- Normal: This is the normal snake's game mode 
+- Battle Royale: You must be the last snake alive, stay in the area that shrinks every 10 seconds.
+- Time Match: You must have as many points as possible at the end of the elapsed time.
+- Max size match: The game ends when one of the snakes reaches the maximum size.
+- Max points match: The game ends when one of the snakes reaches the maximum points.
+- Team match: The team with the most points at the end of the game wins.
 
 The controls:
 -------------
