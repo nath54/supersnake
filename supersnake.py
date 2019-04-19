@@ -634,7 +634,7 @@ def affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palie
             texte("<>",705,260,25,(0,0,0))
             texte("team "+str(teamsp[0]+1),760,260,20,(0,0,0))
     #modes de jeu
-    texte("actual game mode : "+gamemodes[mode],350,350,20,(0,0,0))
+    texte("current game mode : "+gamemodes[mode],350,350,20,(0,0,0))
     bts[25]=bouton(650,350,50,25,(200,200,200))
     texte("<>",655,350,25,(0,0,0))
     if mode==5:
