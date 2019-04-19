@@ -338,7 +338,7 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone):
                     cl=s.cubes[0][2]
                     s.cubes=[]
                     px,py=random.randint(5,tx-5),random.randint(5,ty-5)
-                    while [px,py] in cubes: px,py=random.choice(5,tx-5),random.randint(5,ty-5)
+                    while [px,py] in cubes: px,py=random.randint(5,tx-5),random.randint(5,ty-5)
                     s.cubes.append( [px,py,cl,random.choice(["up","down","left","right"]),random.choice(["up","down","left","right"]) ] )
                     s.agr=tmin
             if s.agr>0:
