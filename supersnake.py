@@ -453,7 +453,7 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palierpo
     tc=rx(750)/tx
     dtc=time.time()
     tac=0.1*0.5*abs(4-dif)
-    nbobjs=(nbb+nbj)*2
+    nbobjs=int((nbb+nbj)*2.5)
     snakes=[]
     objs=[]
     #0 : +1 taille , 1 : +2 taille , 2 : +3 taille , 3 : +10 points par cubes , 4 : +30 points par cubes , 5 : +50 points par cubes
@@ -477,7 +477,7 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palierpo
                 it=teamsp[s]
                 cl=teams[it].cl
             else:
-                oo=float(float(s)-float(nbj))/float(nbb)*float(nbteams)
+                oo=float(float(s)/float(nbb+nbj)*float(nbteams))
                 it=int(oo)
                 cl=teams[it].cl
         snakes.append( Snake(px,py,cl,tmin) )
