@@ -2,14 +2,14 @@
 import random,pygame,time,os
 from pygame.locals import *
 
-btex,btey=1000,960
+btex,btey=1000,900
 mmtex,mmtey=1280,1024
 
 pygame.init()
 
 io = pygame.display.Info()
 mtex,mtey=io.current_w,io.current_h
-mtex,mtey=1280,720
+#mtex,mtey=1280,720
 tex,tey=int(btex/mmtex*mtex),int(btey/mmtey*mtey)
 fenetre=pygame.display.set_mode([tex,tey])
 pygame.display.set_caption("SuperSnake")
