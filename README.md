@@ -74,12 +74,13 @@ To control your snake, there are 4 controls available:
 Screenshots:
 ------------
 
-![](screenshot.jpg)
-![](screenshot1.jpg)
-![](screenshot2.jpg)
-![](screenshot3.jpg)
-![](screenshot4.jpg)
-![](screenshot5.jpg)
-![](screenshot6.jpg)
+![](screenshots/screenshot.jpg)
+![](screenshots/screenshot1.jpg)
+![](screenshots/screenshot2.jpg)
+![](screenshots/screenshot3.jpg)
+![](screenshots/screenshot4.jpg)
+![](screenshots/screenshot5.jpg)
+![](screenshots/screenshot6.jpg)
 
 Enjoy !
+
