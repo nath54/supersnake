@@ -795,8 +795,8 @@ def menu():
     nbj=1 #min : 1 , max : 4    #humains
     dif=0 #facile : 0 , moyen : 1 , difficile : 2 , hardcore : 3
     tmin=3 #min : 1 , max : 6
-    affbords=1 #non : 0 , oui : 1
-    affquadr=1 #non : 0 , oui : 1
+    affbords=0 #non : 0 , oui : 1
+    affquadr=0 #non : 0 , oui : 1
     tps=300 #min : 60 , max : 600 (en secondes)
     paliertaille=50 #min : 30 , max : 100
     palierpoints=30000 #min : 10000 , max : 100000

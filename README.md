@@ -5,8 +5,6 @@ Description:
 
 This is a little game made in python with the pygame library, it's a game based on the famous snake game, but there are some innovations. There are several different game modes, and you can customize many things.
 
-![](screenshot.jpg)
-
 Install and launch the game:
 ----------------------------
 
@@ -72,5 +70,16 @@ To control your snake, there are 4 controls available:
 	- Key g to go down
 	- Key f to go left
 	- Key h to go right
+
+Screenshots:
+------------
+
+![](screenshot.jpg)
+![](screenshot1.jpg)
+![](screenshot2.jpg)
+![](screenshot3.jpg)
+![](screenshot4.jpg)
+![](screenshot5.jpg)
+![](screenshot6.jpg)
 
 Enjoy !
