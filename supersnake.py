@@ -140,6 +140,7 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,
             for c in s.cubes:
                 pygame.draw.rect(fenetre,c[2],(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),0)
                 if affbords: pygame.draw.rect(fenetre,(255,255,255),(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),1)
+                if s.invincible: pygame.draw.rect(fenetre,(0,0,255),(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),2)
     if mode==1:
         pygame.draw.rect(fenetre,(200,150,20),(bpx+zone.px*tc,bpy+zone.py*tc,zone.tx*tc,zone.ty*tc),2)
     if mode==6:
@@ -266,7 +267,7 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
     for s in snakes:
         if not s.perdu:
             if s.player==0: bot(s,snakes,cubes,objs,zone)
-            if s.invincible>0: self.invincible-=1
+            if s.invincible>0: s.invincible-=1
             n=-1
             s.time_survie+=time.time()-s.dt
             s.dt=time.time()
@@ -365,7 +366,7 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
                                 s.invincible+=50
                             try: del(objs[objs.index(o)])
                             except: print("error")
-            if tt and self.invincible==0:
+            if tt and s.invincible==0:
                 """
                 if s.cubes[0][3]=="up": s.cubes[0][1]+=1
                 elif s.cubes[0][3]=="down": s.cubes[0][1]-=1
