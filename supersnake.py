@@ -2,7 +2,7 @@
 import random,pygame,time,os
 from pygame.locals import *
 
-btex,btey=1000,900
+btex,btey=1000,960
 mmtex,mmtey=1280,1024
 
 pygame.init()
