@@ -32,7 +32,7 @@ def bouton(x,y,tx,ty,cl):
 def texte(texte,x,y,taille,cl):
     fenetre.blit( pygame.font.SysFont(ffont,ry(taille)).render(texte,ry(taille),cl) , [rx(x),ry(y)] )
 
-clobjs=[(70,70,70),(150,150,150),(230,230,230),(0,70,0),(0,150,0),(0,230,0),(70,0,0),(150,0,0),(230,0,0),(70,70,0),(150,150,0),(230,230,0),(255,0,255)]
+clobjs=[(70,70,70),(150,150,150),(230,230,230),(0,70,0),(0,150,0),(0,230,0),(70,0,0),(150,0,0),(230,0,0),(70,70,0),(150,150,0),(230,230,0),(255,0,255),(0,20,50),(0,30,130),(0,60,200)]
 clm=(245,245,245)
 
 pkeys=[[K_UP,K_DOWN,K_LEFT,K_RIGHT],[K_KP8,K_KP2,K_KP4,K_KP6],[K_o,K_l,K_k,K_m],[K_t,K_g,K_f,K_h]]
@@ -108,6 +108,7 @@ class Snake:
         self.team=None
         self.kills=0
         self.time_survie=0
+        self.invincible=0
         self.dt=time.time()
     def bouger(self,aa):
         if aa == "up": self.sens=aa
@@ -259,12 +260,13 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
     while len(objs)<nbobjs:
         px,py=random.randint(5,tx-5),random.randint(5,ty-5)
         while [px,py] in cubes and (zone.active and not zone.tciz([px,py]) ): px,py=random.randint(5,tx-5),random.randint(5,ty-5)
-        objs.append([px,py,random.randint(0,12)])
+        objs.append([px,py,random.randint(0,len(clobjs))])
     if mode==1 : zone.reduire()
     if mode==6 : zone.change(tx,ty)
     for s in snakes:
         if not s.perdu:
             if s.player==0: bot(s,snakes,cubes,objs,zone)
+            if s.invincible>0: self.invincible-=1
             n=-1
             s.time_survie+=time.time()-s.dt
             s.dt=time.time()
@@ -296,7 +298,10 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
                           if not ss.perdu:
                             if ss!=s:
                                 for cc in ss.cubes:
-                                    if c[0]==cc[0] and c[1]==cc[1]: tt=True
+                                    if c[0]==cc[0] and c[1]==cc[1]:
+                                        tt=True
+                                        if self.invincible>0:
+                                            ss.perdu,tt=True,False
                                 if tt:
                                     ss.points+=10*len(s.cubes)
                                     ss.kills+=1
@@ -352,9 +357,15 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
                                         del(s.cubes[len(s.cubes)-1])
                                         cubes.append([cc[0],cc[1]])
                             elif o[2]==12: tt=True
+                            elif o[2]==13:
+                                s.invincible+=10
+                            elif o[2]==14:
+                                s.invincible+=30
+                            elif o[2]==15:
+                                s.invincible+=50
                             try: del(objs[objs.index(o)])
                             except: print("error")
-            if tt:
+            if tt and self.invincible==0:
                 """
                 if s.cubes[0][3]=="up": s.cubes[0][1]+=1
                 elif s.cubes[0][3]=="down": s.cubes[0][1]-=1
