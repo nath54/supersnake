@@ -110,6 +110,8 @@ class Snake:
         self.time_survie=0
         self.invincible=0
         self.dt=time.time()
+        self.tt=False
+        self.ttt=False
     def bouger(self,aa):
         if aa == "up": self.sens=aa
         elif aa == "down": self.sens=aa
@@ -117,9 +119,10 @@ class Snake:
         elif aa == "right": self.sens=aa
             
 def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,palierpoints,teams,zone):
+    def ptc(p): return int(tc*p/100)
     fenetre.fill(clf)
     bpx,bpy=rx(50),ry(50)
-    tc=rx(750)/tx
+    tc=int(rx(750)/tx)
     pygame.draw.rect(fenetre,(5,5,5),(bpx,bpy,(tx+1)*tc,(ty+1)*tc),0)
     if mode==1 and zone.active:
         pygame.draw.rect(fenetre,(100,0,0),(bpx,bpy,zone.px*tc,ty*tc),0)
@@ -144,6 +147,26 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,
                 if s.invincible>0:
                     pygame.draw.rect(fenetre,(0,0,255),(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),2)
             if s.invincible>0: texte(str(s.invincible),bpx+s.cubes[0][0]*tc,bpy+s.cubes[0][1]*tc,tc,(0,50,250))
+            if s.cubes[0][3]=="up":
+                pygame.draw.circle(fenetre,(255,255,255),(bpx+int(s.cubes[0][0]*tc)+ptc(15),bpx+int(s.cubes[0][1]*tc)+ptc(15)),ptc(10),0)
+                pygame.draw.circle(fenetre,(255,255,255),(bpx+int(s.cubes[0][0]*tc)+ptc(85),bpx+int(s.cubes[0][1]*tc)+ptc(15)),ptc(10),0)
+                pygame.draw.circle(fenetre,(0,0,0),(bpx+int(s.cubes[0][0]*tc)+ptc(15),bpx+int(s.cubes[0][1]*tc)+ptc(15)),ptc(2),0)
+                pygame.draw.circle(fenetre,(0,0,0),(bpx+int(s.cubes[0][0]*tc)+ptc(85),bpx+int(s.cubes[0][1]*tc)+ptc(15)),ptc(2),0)
+            if s.cubes[0][3]=="down":
+                pygame.draw.circle(fenetre,(255,255,255),(bpx+int(s.cubes[0][0]*tc)+ptc(15),bpx+int(s.cubes[0][1]*tc)+ptc(85)),ptc(10),0)
+                pygame.draw.circle(fenetre,(255,255,255),(bpx+int(s.cubes[0][0]*tc)+ptc(85),bpx+int(s.cubes[0][1]*tc)+ptc(85)),ptc(10),0)
+                pygame.draw.circle(fenetre,(0,0,0),(bpx+int(s.cubes[0][0]*tc)+ptc(15),bpx+s.cubes[0][1]*tc+ptc(85)),ptc(2),0)
+                pygame.draw.circle(fenetre,(0,0,0),(bpx+int(s.cubes[0][0]*tc)+ptc(85),bpx+s.cubes[0][1]*tc+ptc(85)),ptc(2),0)
+            if s.cubes[0][3]=="left":
+                pygame.draw.circle(fenetre,(255,255,255),(bpx+s.cubes[0][0]*tc+ptc(15),bpx+s.cubes[0][1]*tc+ptc(15)),ptc(10),0)
+                pygame.draw.circle(fenetre,(255,255,255),(bpx+s.cubes[0][0]*tc+ptc(15),bpx+s.cubes[0][1]*tc+ptc(85)),ptc(10),0)
+                pygame.draw.circle(fenetre,(0,0,0),(bpx+s.cubes[0][0]*tc+ptc(15),bpx+s.cubes[0][1]*tc+ptc(15)),ptc(2),0)
+                pygame.draw.circle(fenetre,(0,0,0),(bpx+s.cubes[0][0]*tc+ptc(15),bpx+s.cubes[0][1]*tc+ptc(85)),ptc(2),0)
+            if s.cubes[0][3]=="right":
+                pygame.draw.circle(fenetre,(255,255,255),(bpx+s.cubes[0][0]*tc+ptc(85),bpx+s.cubes[0][1]*tc+ptc(15)),ptc(10),0)
+                pygame.draw.circle(fenetre,(255,255,255),(bpx+s.cubes[0][0]*tc+ptc(85),bpx+s.cubes[0][1]*tc+ptc(85)),ptc(10),0)
+                pygame.draw.circle(fenetre,(0,0,0),(bpx+s.cubes[0][0]*tc+ptc(85),bpx+s.cubes[0][1]*tc+ptc(15)),ptc(2),0)
+                pygame.draw.circle(fenetre,(0,0,0),(bpx+s.cubes[0][0]*tc+ptc(85),bpx+s.cubes[0][1]*tc+ptc(85)),ptc(2),0)
     if mode==1:
         pygame.draw.rect(fenetre,(200,150,20),(bpx+zone.px*tc,bpy+zone.py*tc,zone.tx*tc,zone.ty*tc),2)
     if mode==6:
@@ -154,13 +177,17 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,
         for s in snakes:
             sp=""
             if s.perdu: sp=" (dead)"
-            texte('p'+str(snakes.index(s)+1)+' : '+str(s.points)+" | "+str(len(s.cubes))+sp,850,50+30*snakes.index(s),18,(255,255,255))
+            ap=""
+            if s.invincible>0: ap=str(s.invincible)
+            texte(ap+'p'+str(snakes.index(s)+1)+' : '+str(s.points)+" | "+str(len(s.cubes))+sp,850,50+30*snakes.index(s),18,(255,255,255))
     if mode==1:
         texte("survival time | kills",815,5,17,(250,250,250))
         sk=0
         for s in snakes:
             if not s.perdu:
-                texte("p"+str(snakes.index(s)+1)+" : "+str(int(s.time_survie))+"s | "+str(s.kills),830,50+30*sk,16,(255,255,255))
+                ap=""
+                if s.invincible>0: ap=str(s.invincible)
+                texte(ap+"p"+str(snakes.index(s)+1)+" : "+str(int(s.time_survie))+"s | "+str(s.kills),830,50+30*sk,16,(255,255,255))
                 sk+=1
         if not zone.active: texte("time before activation of the zone : "+str(int(zone.ttred-(time.time()-zone.dred)))+" s",400,20,20,(255,255,255))
         else: texte("time before reduction of the zone : "+str(int(zone.ttred-(time.time()-zone.dred)))+" s",400,20,20,(255,255,255))
@@ -173,12 +200,17 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,
         for s in snakes:
             sp=""
             if s.perdu: sp=" (dead)"
-            texte("p"+str(snakes.index(s)+1)+" : "+str(len(s.cubes))+sp,850,50+30*snakes.index(s),18,(255,255,255))
+            ap=""
+            if s.invincible>0: ap=str(s.invincible)
+            texte(ap+"p"+str(snakes.index(s)+1)+" : "+str(len(s.cubes))+sp,850,50+30*snakes.index(s),18,(255,255,255))
     if mode==4:
         sp=""
         if s.perdu: sp=" (dead)"
         texte("points ( goal : "+str(palierpoints)+" )",700,5,20,(250,250,250))
-        for s in snakes: texte("p"+str(snakes.index(s)+1)+" : "+str(s.points)+sp,850,50+30*snakes.index(s),18,(255,255,255))
+        for s in snakes:
+            ap=""
+            if s.invincible>0: ap=str(s.invincible)
+            texte(ap+"p"+str(snakes.index(s)+1)+" : "+str(s.points)+sp,850,50+30*snakes.index(s),18,(255,255,255))
     if mode==5:
         texte("teams : points | kills",800,5,20,(250,250,250))
         for t in teams:
@@ -289,33 +321,44 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
                 if c[1]<0: c[1]=ty
                 elif c[1]>ty: c[1]=0
                 if n==0:
-                    tt=False
+                    s.tt=False
+                    if s.ttt:
+                        s.tt=True
+                        s.ttt=False
                     if mode==1 and zone.active and not zone.tciz(c):
                         if len(s.cubes)>1: del(s.cubes[len(s.cubes)-1])
-                        else: tt=True
-                    if not tt:
+                        else: s.tt=True
+                    if not s.tt:
                         for cc in s.cubes:
                             if s.cubes.index(cc)!=0:
-                                if c[0]==cc[0] and c[1]==cc[1]: tt=True
-                    if not tt:
+                                if c[0]==cc[0] and c[1]==cc[1]: s.tt=True
+                    if not s.tt:
                       for ss in snakes:
                           if not ss.perdu:
                             if ss!=s:
                                 for cc in ss.cubes:
                                     if c[0]==cc[0] and c[1]==cc[1]:
-                                        tt=True
+                                        s.tt=True
                                         if s.invincible>0:
-                                            ss.perdu,tt=True,False
-                                if tt:
+                                            ss.ttt,s.tt=True,False
+                                            
+                                if s.tt:
                                     ss.points+=10*len(s.cubes)
                                     ss.kills+=1
                                     if mode==5 and s.team!=ss.team:
                                         ss.team.points+=50*len(s.cubes)
                                         ss.team.kills+=1
                                     break
-                    if not tt:
+                                if ss.ttt:
+                                    s.points+=10*len(s.cubes)
+                                    s.kills+=1
+                                    if mode==5 and s.team!=ss.team:
+                                        s.team.points+=50*len(ss.cubes)
+                                        s.team.kills+=1
+                                    break
+                    if not s.tt:
                       for cc in cubes:
-                        if c[0]==cc[0] and c[1]==cc[1]: tt=True
+                        if c[0]==cc[0] and c[1]==cc[1]: s.tt=True
                     for o in objs:
                         if c[0]==o[0] and c[1]==o[1]:
                             if o[2]==0: s.agr+=1
@@ -360,7 +403,7 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
                                         cc=s.cubes[len(s.cubes)-1]        
                                         del(s.cubes[len(s.cubes)-1])
                                         cubes.append([cc[0],cc[1]])
-                            elif o[2]==12: tt=True
+                            elif o[2]==12: s.tt=True
                             elif o[2]==13:
                                 s.invincible+=10
                             elif o[2]==14:
@@ -369,7 +412,7 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
                                 s.invincible+=50
                             try: del(objs[objs.index(o)])
                             except: print("error")
-            if tt and s.invincible==0:
+            if s.tt and s.invincible==0:
                 """
                 if s.cubes[0][3]=="up": s.cubes[0][1]+=1
                 elif s.cubes[0][3]=="down": s.cubes[0][1]-=1
@@ -484,7 +527,10 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palierpo
         if mode==0 or mode==6: #mode normal #mode invisible
             if nbv<=0: encourg=False
         elif mode==1: #battle-royale
-            if nbv<=1: encourg=False
+            nbsv=0
+            for s in snakes: 
+                if not s.perdu: nbsv+=1
+            if nbsv==1:encourg=False
         elif mode==2 or mode==5: #time-game #teams match
             if tps<=0: encourg=False
         elif mode==3: #the first at big size
@@ -683,17 +729,17 @@ def affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palie
         if nbj>=2:
             bts[22]=bouton(700,180,50,25,(200,200,200))
             texte("<>",705,180,25,(0,0,0))
-            texte("team "+str(teamsp[0]+1),760,180,20,(0,0,0))
+            texte("team "+str(teamsp[1]+1),760,180,20,(0,0,0))
         #p3
         if nbj>=3:
             bts[23]=bouton(700,220,50,25,(200,200,200))
             texte("<>",705,220,25,(0,0,0))
-            texte("team "+str(teamsp[0]+1),760,220,20,(0,0,0))
+            texte("team "+str(teamsp[2]+1),760,220,20,(0,0,0))
         #p4
         if nbj>=4:
             bts[24]=bouton(700,260,50,25,(200,200,200))
             texte("<>",705,260,25,(0,0,0))
-            texte("team "+str(teamsp[0]+1),760,260,20,(0,0,0))
+            texte("team "+str(teamsp[3]+1),760,260,20,(0,0,0))
     #modes de jeu
     texte("current game mode : "+gamemodes[mode],350,350,20,(0,0,0))
     bts[25]=bouton(650,350,50,25,(200,200,200))
