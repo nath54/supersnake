@@ -131,16 +131,19 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,
             pygame.draw.line(fenetre,(200,200,200),(bpx+tc*x,bpy),(bpx+tc*x,bpy+(tc*(ty+1))),1)
         for y in range(0,ty+2):
             pygame.draw.line(fenetre,(200,200,200),(bpx,bpy+tc*y),(bpx+(tc*(tx+1)),bpy+tc*y),1)
+    for o in objs:
+        try: pygame.draw.rect(fenetre,clobjs[o[2]],(bpx+tc*o[0]+rx(4),bpy+tc*o[1]+ry(4),tc-rx(6),tc-ry(6)),0)
+        except: pass
     for c in cubes:
         pygame.draw.rect(fenetre,clm,(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),0)
-    for o in objs:
-        pygame.draw.rect(fenetre,clobjs[o[2]],(bpx+tc*o[0]+rx(4),bpy+tc*o[1]+ry(4),tc-rx(6),tc-ry(6)),0)
     for s in snakes:
         if not s.perdu:
             for c in s.cubes:
                 pygame.draw.rect(fenetre,c[2],(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),0)
                 if affbords: pygame.draw.rect(fenetre,(255,255,255),(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),1)
-                if s.invincible: pygame.draw.rect(fenetre,(0,0,255),(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),2)
+                if s.invincible>0:
+                    pygame.draw.rect(fenetre,(0,0,255),(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),2)
+            if s.invincible>0: texte(str(s.invincible),bpx+s.cubes[0][0]*tc,bpy+s.cubes[0][1]*tc,tc,(0,50,250))
     if mode==1:
         pygame.draw.rect(fenetre,(200,150,20),(bpx+zone.px*tc,bpy+zone.py*tc,zone.tx*tc,zone.ty*tc),2)
     if mode==6:
@@ -301,7 +304,7 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
                                 for cc in ss.cubes:
                                     if c[0]==cc[0] and c[1]==cc[1]:
                                         tt=True
-                                        if self.invincible>0:
+                                        if s.invincible>0:
                                             ss.perdu,tt=True,False
                                 if tt:
                                     ss.points+=10*len(s.cubes)
