@@ -9,6 +9,7 @@ pygame.init()
 
 io = pygame.display.Info()
 mtex,mtey=io.current_w,io.current_h
+mtex,mtey=1280,720
 tex,tey=int(btex/mmtex*mtex),int(btey/mmtey*mtey)
 fenetre=pygame.display.set_mode([tex,tey])
 pygame.display.set_caption("SuperSnake")
@@ -29,7 +30,7 @@ def bouton(x,y,tx,ty,cl):
     return b
 
 def texte(texte,x,y,taille,cl):
-    fenetre.blit( pygame.font.SysFont(ffont,taille).render(texte,taille,cl) , [rx(x),ry(y)] )
+    fenetre.blit( pygame.font.SysFont(ffont,ry(taille)).render(texte,ry(taille),cl) , [rx(x),ry(y)] )
 
 clobjs=[(70,70,70),(150,150,150),(230,230,230),(0,70,0),(0,150,0),(0,230,0),(70,0,0),(150,0,0),(230,0,0),(70,70,0),(150,150,0),(230,230,0),(255,0,255)]
 clm=(245,245,245)
@@ -39,8 +40,8 @@ pkaff=["up-down-left-right","num8-num2-num4-num6","o-l-k-m","t-g-f-h"]
 
 ldifs=["easy","medium","hard","hardcore"]
 
-gamemodes=["normal","battle-royale","time match","max size match","max points match","teams match"]
-
+gamemodes=["normal","battle-royale","time match","max size match","max points match","teams match","invisible zone"]
+colormodes=["normal","dégradé"]
 ################################jeu
 
 class Zone:
@@ -57,12 +58,20 @@ class Zone:
         else: return False
     def reduire(self):
         if time.time()-self.dred >= self.ttred:
-            if not self.active: self.active=True
+            if not self.active:
+                self.active=True
+                self.dred=time.time()
             else:
                 self.dred=time.time()
-                if self.tx>1: self.tx-=1
-                if self.ty>1: self.ty-=1
-        
+                self.px+=1
+                self.py+=1
+                if self.tx>2: self.tx-=2
+                if self.ty>2: self.ty-=2
+    def change(self,tx,ty):
+        if time.time()-self.dred >= self.ttred:
+            self.dred=time.time()
+            self.px,self.py=random.randint(0,tx-20),random.randint(0,ty-20)
+            self.tx,self.ty=random.randint(5,tx-self.px),random.randint(5,ty-self.py)
 
 class Team:
     def __init__(self,nom,cl):
@@ -132,12 +141,17 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,
                 if affbords: pygame.draw.rect(fenetre,(255,255,255),(bpx+c[0]*tc,bpy+c[1]*tc,tc,tc),1)
     if mode==1:
         pygame.draw.rect(fenetre,(200,150,20),(bpx+zone.px*tc,bpy+zone.py*tc,zone.tx*tc,zone.ty*tc),2)
+    if mode==6:
+        pygame.draw.rect(fenetre,(0,0,0),(bpx+zone.px*tc,bpy+zone.py*tc,zone.tx*tc,zone.ty*tc),0)
     #interface
-    if mode==0 or mode==2:
-        texte("scores | sizes",800,5,20,(250,250,250))
-        for s in snakes: texte('p'+str(snakes.index(s)+1)+' : '+str(s.points)+" | "+str(len(s.cubes)),850,50+30*snakes.index(s),18,(255,255,255))
+    if mode==0 or mode==2 or mode==6:
+        texte("scores | sizes",830,5,20,(250,250,250))
+        for s in snakes:
+            sp=""
+            if s.perdu: sp=" (dead)"
+            texte('p'+str(snakes.index(s)+1)+' : '+str(s.points)+" | "+str(len(s.cubes))+sp,850,50+30*snakes.index(s),18,(255,255,255))
     if mode==1:
-        texte("survival time | kills",800,5,17,(250,250,250))
+        texte("survival time | kills",815,5,17,(250,250,250))
         sk=0
         for s in snakes:
             if not s.perdu:
@@ -148,21 +162,28 @@ def affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,
     if mode==2 or mode==5:
         texte("remaining time : "+str(int(tps))+" s",400,20,20,(255,255,255))
         if tps<5:
-            texte(str(tps),250,250,50,(255,0,0))
+            texte(str(tps)[:5],250,250,50,(255,0,0))
     if mode==3:
         texte("sizes ( goal : "+str(paliertaille)+" )",700,5,20,(250,250,250))
-        for s in snakes: texte("p"+str(snakes.index(s)+1)+" : "+str(len(s.cubes)),850,50+30*snakes.index(s),18,(255,255,255))
+        for s in snakes:
+            sp=""
+            if s.perdu: sp=" (dead)"
+            texte("p"+str(snakes.index(s)+1)+" : "+str(len(s.cubes))+sp,850,50+30*snakes.index(s),18,(255,255,255))
     if mode==4:
+        sp=""
+        if s.perdu: sp=" (dead)"
         texte("points ( goal : "+str(palierpoints)+" )",700,5,20,(250,250,250))
-        for s in snakes: texte("p"+str(snakes.index(s)+1)+" : "+str(s.points),850,50+30*snakes.index(s),18,(255,255,255))
+        for s in snakes: texte("p"+str(snakes.index(s)+1)+" : "+str(s.points)+sp,850,50+30*snakes.index(s),18,(255,255,255))
     if mode==5:
-        texte("teams : points | kills",750,5,20,(250,250,250))
+        texte("teams : points | kills",800,5,20,(250,250,250))
         for t in teams:
             bouton(850,50+30*teams.index(t)-1,150,40,t.cl)
             texte("team"+str(teams.index(t)+1)+" : "+str(t.points)+" | "+str(t.kills),850,50+30*teams.index(t),18,(255,255,255))
+    if mode==6:
+        texte("time before movement of the zone : "+str(int(zone.ttred-(time.time()-zone.dred)))+" s",400,20,20,(255,255,255))
     pygame.display.update()
 
-def agrandirsnake(nb,s):
+def agrandirsnake(nb,s,modecl):
     s.taille+=nb
     for w in range(nb):
         dc=s.cubes[len(s.cubes)-1]
@@ -171,7 +192,17 @@ def agrandirsnake(nb,s):
         elif dc[3]=="down": yy=-1
         elif dc[3]=="left": xx=1
         elif dc[3]=="right": xx=-1
-        s.cubes.append([dc[0]+xx,dc[1]+yy,dc[2],dc[3],dc[4]])
+        cl=dc[2]
+        if modecl==1:
+            b=20
+            cl=[list(cl)[0]+random.randint(-b,b),list(cl)[1]+random.randint(-b,b),list(cl)[2]+random.randint(-b,b)]
+            if cl[0]>255: cl[0]=255
+            if cl[1]>255: cl[1]=255
+            if cl[2]>255: cl[2]=255
+            if cl[0]<0: cl[0]=0
+            if cl[1]<0: cl[1]=0
+            if cl[2]<0: cl[2]=0
+        s.cubes.append([dc[0]+xx,dc[1]+yy,cl,dc[3],dc[4]])
     return s
 
 def btmv():
@@ -221,7 +252,7 @@ def bot(s,snakes,cubes,objs,zone):
     
 
 
-def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone):
+def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl):
   if time.time()-dtc >= tac:
     ccccc=[]
     dtc=time.time()
@@ -229,7 +260,8 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone):
         px,py=random.randint(5,tx-5),random.randint(5,ty-5)
         while [px,py] in cubes and (zone.active and not zone.tciz([px,py]) ): px,py=random.randint(5,tx-5),random.randint(5,ty-5)
         objs.append([px,py,random.randint(0,12)])
-    zone.reduire()
+    if mode==1 : zone.reduire()
+    if mode==6 : zone.change(tx,ty)
     for s in snakes:
         if not s.perdu:
             if s.player==0: bot(s,snakes,cubes,objs,zone)
@@ -329,7 +361,7 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone):
                 elif s.cubes[0][3]=="left": s.cubes[0][0]+=1
                 elif s.cubes[0][3]=="right": s.cubes[0][0]-=1
                 """
-                if mode == 0 or mode==1:
+                if mode == 0 or mode==1 or mode==6:
                     nbv-=1
                     s.perdu=True
                     for c in s.cubes: cubes.append( [c[0],c[1]] )
@@ -342,16 +374,21 @@ def ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone):
                     s.cubes.append( [px,py,cl,random.choice(["up","down","left","right"]),random.choice(["up","down","left","right"]) ] )
                     s.agr=tmin
             if s.agr>0:
-                s=agrandirsnake(1,s)
+                s=agrandirsnake(1,s,modecl)
                 s.agr-=1
     
   return snakes,cubes,mis,tx,ty,objs,dtc,tac,nbv
 
 def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palierpoints,paliertaille,nbteams,teamsp):
-    zx=random.randint(0,int(tx/5))
-    zy=random.randint(0,int(ty/5))
-    ztx=tx-zx-random.randint(0,5)
-    zty=ty-zy-random.randint(0,5)
+    zx,zy,ztx,zty=0,0,0,0
+    if mode==1:
+        zx=random.randint(0,int(tx/5))
+        zy=random.randint(0,int(ty/5))
+        ztx=tx-zx-random.randint(0,5)
+        zty=ty-zy-random.randint(0,5)
+    if mode==6:
+        zx,zy=random.randint(0,tx-20),random.randint(0,ty-20)
+        ztx,zty=random.randint(5,tx-zx),random.randint(5,ty-zy)
     zone=Zone(zx,zy,ztx,zty)
     teams=[]
     bpx,bpy=rx(50),ry(50)
@@ -404,22 +441,32 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palierpo
     pygame.display.update()
     time.sleep(3)
     encourg=True
+    encourfg=True
     tt=time.time()
     while encourg:
         tps-=time.time()-tt
         tt=time.time()
         affgame(snakes,cubes,mis,tx,ty,objs,affbords,affquadr,mode,tps,paliertaille,palierpoints,teams,zone)
-        snakes,cubes,mis,tx,ty,objs,dtc,tac,nbv=ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone)
+        snakes,cubes,mis,tx,ty,objs,dtc,tac,nbv=ccc(snakes,cubes,mis,tx,ty,objs,dtc,tac,nbobjs,nbv,mode,tmin,zone,modecl)
+        ##
+        nbjsurviv=nbj
+        for w in range(nbj):
+            if snakes[w].perdu: nbjsurviv-=1
+        if nbjsurviv==0:
+            texte("Press 'Space' to return to the menu",10,10,20,(255,255,255))
+            pygame.display.update()
+        ##      
         for event in pygame.event.get():
             if event.type==QUIT: exit()
             elif event.type==KEYDOWN:
                 if event.key==K_q: exit()
+                if nbjsurviv==0 and event.key==K_SPACE: encourg,encourfg=False,False
                 for s in snakes:
                     if event.key==s.keys[0] and s.cubes[0][3]!="down": s.bouger("up")
                     elif event.key==s.keys[1] and s.cubes[0][3]!="up": s.bouger("down")
                     elif event.key==s.keys[2] and s.cubes[0][3]!="right": s.bouger("left")
                     elif event.key==s.keys[3] and s.cubes[0][3]!="left": s.bouger("right")
-        if mode==0: #mode normal
+        if mode==0 or mode==6: #mode normal #mode invisible
             if nbv<=0: encourg=False
         elif mode==1: #battle-royale
             if nbv<=1: encourg=False
@@ -433,13 +480,12 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palierpo
                 if s.points>=palierpoints: encourg=False
             
     #fin
-    encourfg=True
     fenetre.fill(clf)
-    if mode in [0,2,3,4]:
+    if mode in [0,2,3,4,6]:
         lp1=0
         lp2=0
         lp3=0
-        if mode==0 or mode==2 or mode==4:
+        if mode in [0,2,4,6]:
             if len(snakes)>0:
                 for l in range(len(snakes)):
                     if snakes[l].points>snakes[lp1].points: lp1=l
@@ -512,7 +558,7 @@ def game(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palierpo
             if not s.perdu: sg=snakes.index(s)
         si="player"
         if snakes[sg].player==0: si="bot"
-        texte("#1 : "+si+str(sg+1)+" survival time : "+str(snakes[sg].time_survie)+" sec",100,500,35,(255,255,255))
+        texte("#1 : "+si+str(sg+1),100,500,35,(255,255,255))
     texte("The game is over.",100,300,30,(0,0,0))
     texte("Press 'Space' to go to the game menu.",100,400,30,(0,0,0))
     pygame.display.update()
@@ -662,14 +708,17 @@ def affmenu(modecl,tx,ty,mode,nbb,nbj,dif,affbords,affquadr,tmin,keysp,tps,palie
         texte("+",560,390,25,(0,0,0))
         texte("max points : "+str(palierpoints),380,390,20,(0,0,0))
     #règles
-    texte("Rules : ",50,570,20,(255,255,255))
+    texte("Tips : ",18,570,20,(255,255,255))
     texte("Small gray cubes enlarge the body of your snake",20,600,20,(150,150,150))
     texte("Small red cubes reduce the body of your snake",20,630,20,(150,0,0))
     texte("Small yellow cubes replace the end of your snake's body with a wall",20,660,20,(150,150,0))
     texte("Small green cubes give you points",20,690,20,(0,150,0))
     texte("Small purple cubes kill you",20,720,20,(150,0,150))
+    texte("Small blue cubes make you invincible for a while",20,750,20,(0,0,150))
     #mode couleurs
-    #TODO
+    bts[34]=bouton(20,500,50,25,(150,150,150))
+    texte("<>",25,500,25,(0,0,0))
+    texte("color mode : "+colormodes[modecl],80,500,20,(150,150,150))
     #update screen
     pygame.display.update()
     return bts
@@ -680,7 +729,7 @@ def menu():
     teamsp=[0,0,1,1]
     modecl=0 #0=normal , 1=dégradé
     tx,ty=65,50 #petit : 40*30 , moyen : 50*40 , grand : 65*50
-    mode=0 #0=normal , 1=battle-royale , 2=time match , 3=max size match , 4=max points match , 5=team match
+    mode=0 #0=normal , 1=battle-royale , 2=time match , 3=max size match , 4=max points match , 5=team match , 6=invisible zone
     nbb=10 #min : 0 , max : 15   #bots
     nbj=1 #min : 1 , max : 4    #humains
     dif=0 #facile : 0 , moyen : 1 , difficile : 2 , hardcore : 3
@@ -764,7 +813,7 @@ def menu():
                             if teamsp[3]>nbteams-1: teamsp[3]=0
                         elif di==25:
                             mode+=1
-                            if mode==6: mode=0
+                            if mode==len(gamemodes): mode=0
                         elif di==26:
                             if nbteams > 2 : nbteams-=1
                         elif di==27:
@@ -781,6 +830,9 @@ def menu():
                             if palierpoints > 10000 : palierpoints-=1000
                         elif di==33:
                             if palierpoints < 100000 : palierpoints+=1000
+                        elif di==34:
+                            modecl+=1
+                            if modecl==len(colormodes): modecl=0
                             
                             
                         
