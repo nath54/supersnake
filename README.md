@@ -86,4 +86,5 @@ Enjoy !
 
 
 news:
--With the last update, I add at the game differents things, like eyes for the snakes, and a new game mode : "invisible zone"
+
+ - With the last update, I add at the game differents things, like eyes for the snakes, and a new game mode : "invisible zone"
