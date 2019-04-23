@@ -11,7 +11,7 @@ Install and launch the game:
 To play the game , there is 2 possibilities:
 
 - If you have python3 and the pygame library: you download the file 'supersnake.py' and you launch it with the command: "python supersnake.py" or "python3 supersnake.py"
-- If you are on windows: you download the file 'jeu.zip', you extract it and you lanch the file 'supersnake.exe'
+- If you are on windows: you download the file 'https://github.com/nath54/supersnake/releases/tag/supersnake', you extract it and you lanch the file 'supersnake.exe'
 
 Essential things to know about this game:
 -----------------------------------------
@@ -84,3 +84,6 @@ Screenshots:
 
 Enjoy !
 
+
+news:
+-With the last update, I add at the game differents things, like eyes for the snakes, and a new game mode : "invisible zone"
